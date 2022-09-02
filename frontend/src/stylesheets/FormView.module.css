@@ -1,0 +1,86 @@
+.form {
+  width: max(75%, 250px);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  background-color: rgb(244, 244, 232);
+  border-radius: 10px;
+  margin: 20px auto;
+}
+
+.form > h2 {
+  width: 100%;
+  text-align: left !important;
+}
+
+.form > label {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-bottom: 5px;
+}
+
+.form > label > span {
+  display: inline-block;
+  width: 100%;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgb(28, 28, 28);
+  text-align: left;
+  padding: 5px 5px 5px 0;
+}
+
+.form > label > textarea {
+  width: 100%;
+  padding: 5px;
+  font-size: 16px;
+  color: rgb(56, 56, 56);
+  border: 1px solid rgb(47, 47, 47, 0.5);
+  border-radius: 5px;
+}
+
+.form > label > input,
+.form > input {
+  width: 100% !important;
+  padding: 5px;
+  text-align: center;
+  font-size: 16px;
+  color: rgb(56, 56, 56);
+  border: 1px solid rgb(47, 47, 47, 0.5);
+  border-radius: 5px;
+}
+
+.form > label > select {
+  width: 100%;
+  padding: 5px;
+  font-size: 16px;
+  color: rgb(56, 56, 56);
+  border: 1px solid rgb(47, 47, 47, 0.5);
+  border-radius: 5px;
+}
+
+.form > label > input:active {
+  box-shadow: 0 0 0 0px rgba(0, 217, 255, 0.551);
+}
+
+.form > input[type="submit"] {
+  background-color: transparent;
+  border: 1px solid var(--subTheme);
+  width: 100%;
+  padding: 5px;
+  text-align: center;
+  color: var(--subTheme);
+  transition: all 0.5s;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form > input[type="submit"]:hover {
+  background-color: var(--subTheme);
+  color: #fff;
+  transform: scale(1.035, 1.23);
+}

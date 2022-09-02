@@ -1,0 +1,88 @@
+.quizPlayHolder {
+  width: 80%;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 40px;
+  padding: 20px;
+}
+
+.chooseHeader {
+  font-size: 34px;
+  font-weight: bold;
+}
+
+.categoryHolder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  font-size: 24px;
+}
+
+.playCategory {
+  border: 1.5px solid rgb(47, 47, 47);
+  width: calc(50% - 10px);
+  border-radius: 10px;
+  transition: all 0.2s !important;
+  cursor: pointer;
+}
+
+.playCategory:hover {
+  color: #fff;
+  background-color: rgb(66, 66, 66);
+}
+
+.cumulative {
+  color: var(--theme);
+}
+
+.button {
+  width: 100px;
+  margin-top: 5px;
+  background-color: dodgerblue;
+  color: white;
+  padding: 3px 5px;
+  align-self: center;
+}
+
+.button {
+  margin: 0 auto;
+  margin-top: 20px;
+  border-radius: 5px;
+  color: #fff;
+  background-color: var(--subTheme);
+  cursor: pointer;
+}
+
+.quizAnswer {
+  color: var(--theme);
+}
+
+.quizCategory {
+  margin: 12px;
+  font-size: 24px;
+}
+
+.correct {
+  color: rgb(2, 171, 2);
+}
+
+.wrong {
+  color: #ff0000;
+}
+
+.entreaty {
+  width: 100%;
+  text-align: center !important;
+}
+
+@media (max-width: 395px) {
+  .quizPlayHolder {
+    width: 100%;
+  }
+  .playCategory {
+    width: 100%;
+  }
+}
