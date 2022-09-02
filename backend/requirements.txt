@@ -1,0 +1,16 @@
+aniso8601
+Click
+Flask
+Flask-Cors
+Flask-RESTful
+Flask-SQLAlchemy
+Flask-Migrate
+itsdangerous
+Jinja2
+MarkupSafe
+psycopg2-binary
+pytz
+six
+SQLAlchemy
+Werkzeug
+python-dotenv
