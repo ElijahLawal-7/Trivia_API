@@ -6,8 +6,13 @@ import json
 # from backend.test_flaskr import TriviaTestCase
 from settings import DATABASE_NAME, DATABASE_PORT, DATABASE_OWNER, DATABASE_PASSWORD
 
+
 database_name = DATABASE_NAME
-database_path = f'postgresql://postgres@localhost:5432/trivia'
+# database_path = f'postgresql://postgres@localhost:5432/trivia'
+
+database_name = 'trivia'
+database_path = 'postgresql://{}:{}@{}/{}'.format("postgres", ' ', 'localhost:5432', database_name)
+
 
 db = SQLAlchemy()
 

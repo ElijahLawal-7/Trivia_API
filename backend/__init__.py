@@ -1,5 +1,5 @@
 import os
-# import os
+
 import sys
 pwd = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, pwd)
@@ -12,7 +12,6 @@ import math
 import random
 
 from models import setup_db, Question, Category, User
-
 
 QUESTIONS_PER_PAGE = 3
 BASE_URL = '/api/v0.1.0'
