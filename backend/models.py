@@ -7,7 +7,7 @@ import json
 from settings import DATABASE_NAME, DATABASE_PORT, DATABASE_OWNER, DATABASE_PASSWORD
 
 database_name = DATABASE_NAME
-database_path = f'postgresql://postgres@localhost:5432/trivia'
+database_path = f'postgresql://postgres@localhost:5432/postgres'
 
 db = SQLAlchemy()
 
