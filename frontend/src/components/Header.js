@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import styles from "../stylesheets/Header.module.css";
+import React, { Component } from 'react';
+import '../stylesheets/Header.css';
 
 class Header extends Component {
   navTo(uri) {
@@ -8,59 +8,31 @@ class Header extends Component {
 
   render() {
     return (
-      <div className={styles.appHeader}>
+      <div className='App-header'>
         <h1
-          className={styles.mainHeader}
           onClick={() => {
-            this.navTo("");
+            this.navTo('');
           }}
         >
           Udacitrivia
         </h1>
         <h2
-          className={`${styles.headers} ${
-            window.location.href === window.location.origin + "/"
-              ? styles.selected
-              : ""
-          }`}
           onClick={() => {
-            this.navTo("");
+            this.navTo('');
           }}
         >
           List
         </h2>
-        <h3
-          className={`${styles.headers} ${
-            window.location.href === window.location.origin + "/add-question"
-              ? styles.selected
-              : ""
-          }`}
-          onClick={() => {
-            this.navTo("/add-question");
-          }}
-        >
-          Add Question
-        </h3>
-        <h3
-          className={`${styles.headers} ${
-            window.location.href === window.location.origin + "/add-category"
-              ? styles.selected
-              : ""
-          }`}
-          onClick={() => {
-            this.navTo("/add-category");
-          }}
-        >
-          Add Category
-        </h3>
         <h2
-          className={`${styles.headers} ${
-            window.location.href === window.location.origin + "/play"
-              ? styles.selected
-              : ""
-          }`}
           onClick={() => {
-            this.navTo("/play");
+            this.navTo('/add');
+          }}
+        >
+          Add
+        </h2>
+        <h2
+          onClick={() => {
+            this.navTo('/play');
           }}
         >
           Play

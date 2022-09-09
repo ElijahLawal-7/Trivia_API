@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import styles from '../stylesheets/FormView.module.css';
 
 class Search extends Component {
   state = {
@@ -17,17 +16,15 @@ class Search extends Component {
     });
   };
 
-  render () {
+  render() {
     return (
-      <form onSubmit={this.getInfo} className={styles.form}>
-        <label>
-          <input
-            placeholder='Search questions...'
-            ref={(input) => (this.search = input)}
-            onChange={this.handleInputChange}
-          />
-        </label>
-        <input type='submit' value='Submit' />
+      <form onSubmit={this.getInfo}>
+        <input
+          placeholder='Search questions...'
+          ref={(input) => (this.search = input)}
+          onChange={this.handleInputChange}
+        />
+        <input type='submit' value='Submit' className='button' />
       </form>
     );
   }

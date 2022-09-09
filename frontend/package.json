@@ -5,20 +5,18 @@
   "proxy": "http://127.0.0.1:5000/",
   "dependencies": {
     "corsproxy": "^1.5.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.6.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-router-dom": "^5.3.3",
-    "react-scripts": "^3.4.4"
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts --openssl-legacy-provider build",
-    "test": "react-scripts --openssl-legacy-provider test",
-    "eject": "react-scripts --openssl-legacy-provider eject"
+    "start": "node node_modules/react-scripts/scripts/start.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-
-
   "eslintConfig": {
     "extends": "react-app"
   },

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import styles from '../stylesheets/QuestionsView.module.css';
+import '../stylesheets/App.css';
 import Question from './Question';
 import Search from './Search';
 import $ from 'jquery';
-
-const base_url = '/api/v0.1.0';
 
 class QuestionView extends Component {
   constructor() {
@@ -14,27 +12,24 @@ class QuestionView extends Component {
       page: 1,
       totalQuestions: 0,
       categories: {},
-      currentCategory: 0,
-      onSearch: false,
-      searchTerm: ''
+      currentCategory: null,
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getQuestions();
   }
 
-  getQuestions = (page = 1) => {
+  getQuestions = () => {
     $.ajax({
-      url: `${base_url}/questions?page=${page}`, //TODO: update request URL
+      url: `/questions?page=${this.state.page}`, //TODO: update request URL
       type: 'GET',
       success: (result) => {
         this.setState({
           questions: result.questions,
           totalQuestions: result.total_questions,
-          currentCategory: result.current_category,
           categories: result.categories,
-          page: page
+          currentCategory: result.current_category,
         });
         return;
       },
@@ -45,29 +40,18 @@ class QuestionView extends Component {
     });
   };
 
-  selectPage (num) {
-    this.setState({ page: num }, () => {
-      if (!this.state.onSearch) {
-        if (!this.state.currentCategory) {
-          this.getQuestions(this.state.page);
-        } else {
-          this.getByCategory(this.state.currentCategory, this.state.page);
-        }
-      }
-      else {
-        this.submitSearch(this.state.searchTerm, this.state.page);
-      };
-    });
+  selectPage(num) {
+    this.setState({ page: num }, () => this.getQuestions());
   }
 
-  createPagination () {
+  createPagination() {
     let pageNumbers = [];
-    let maxPage = Math.ceil(this.state.totalQuestions / 3);
+    let maxPage = Math.ceil(this.state.totalQuestions / 10);
     for (let i = 1; i <= maxPage; i++) {
       pageNumbers.push(
         <span
           key={i}
-          className={`${styles.pageNum} ${i === this.state.page ? styles.active : ''}`}
+          className={`page-num ${i === this.state.page ? 'active' : ''}`}
           onClick={() => {
             this.selectPage(i);
           }}
@@ -79,17 +63,15 @@ class QuestionView extends Component {
     return pageNumbers;
   }
 
-  getByCategory = (id, page = 1) => {
+  getByCategory = (id) => {
     $.ajax({
-      url: `${base_url}/categories/${id}/questions?page=${page}`, //TODO: update request URL
+      url: `/categories/${id}/questions`, //TODO: update request URL
       type: 'GET',
       success: (result) => {
         this.setState({
           questions: result.questions,
           totalQuestions: result.total_questions,
           currentCategory: result.current_category,
-          onSearch: false,
-          page: page
         });
         return;
       },
@@ -100,13 +82,13 @@ class QuestionView extends Component {
     });
   };
 
-  submitSearch = (searchTerm, page = 1) => {
+  submitSearch = (searchTerm) => {
     $.ajax({
-      url: `${base_url}/questions?page=${page}`, //TODO: update request URL
+      url: `/questions/search`,
       type: 'POST',
       dataType: 'json',
       contentType: 'application/json',
-      data: JSON.stringify({ search_term: searchTerm }),
+      data: JSON.stringify({ searchTerm: searchTerm }),
       xhrFields: {
         withCredentials: true,
       },
@@ -116,9 +98,6 @@ class QuestionView extends Component {
           questions: result.questions,
           totalQuestions: result.total_questions,
           currentCategory: result.current_category,
-          onSearch: true,
-          searchTerm: searchTerm,
-          page: page
         });
         return;
       },
@@ -133,12 +112,10 @@ class QuestionView extends Component {
     if (action === 'DELETE') {
       if (window.confirm('are you sure you want to delete the question?')) {
         $.ajax({
-          url: `${base_url}/questions/${id}`, //TODO: update request URL
+          url: `/questions/${id}`, //TODO: update request URL
           type: 'DELETE',
           success: (result) => {
-            this.setState({
-              questions: this.state.questions.filter(question => question.id !== result.deleted_id)
-            });
+            this.getQuestions();
           },
           error: (error) => {
             alert('Unable to load questions. Please try your request again');
@@ -149,10 +126,10 @@ class QuestionView extends Component {
     }
   };
 
-  render () {
+  render() {
     return (
-      <div className={styles.questionView}>
-        <div className={styles.categoriesList}>
+      <div className='question-view'>
+        <div className='categories-list'>
           <h2
             onClick={() => {
               this.getQuestions();
@@ -161,39 +138,29 @@ class QuestionView extends Component {
             Categories
           </h2>
           <ul>
-            <li
-              onClick={() => { this.getQuestions(1); }}
-              className={`${this.state.currentCategory === 0 ? styles.selected : ''}`}
-            >
-              All
-            </li>
             {Object.keys(this.state.categories).map((id) => (
               <li
                 key={id}
                 onClick={() => {
                   this.getByCategory(id);
                 }}
-                className={`${Number(this.state.currentCategory) === Number(id) ? styles.selected : ''}`}
               >
+                {this.state.categories[id]}
                 <img
-                  className={styles.category}
+                  className='category'
                   alt={`${this.state.categories[id].toLowerCase()}`}
-                  src={`${id < 7 ? this.state.categories[id].toLowerCase() : 'new'}.svg`}
+                  src={`${this.state.categories[id].toLowerCase()}.svg`}
                 />
-                <span>{this.state.categories[id]}</span>
               </li>
             ))}
           </ul>
+          <Search submitSearch={this.submitSearch} />
         </div>
-        <div className={styles.questionsList}>
-          <h2>
-            Questions
-          </h2>
+        <div className='questions-list'>
+          <h2>Questions</h2>
           {this.state.questions.map((q, ind) => (
             <Question
               key={q.id}
-              id={q.id}
-              rating={q.rating}
               question={q.question}
               answer={q.answer}
               category={this.state.categories[q.category]}
@@ -201,8 +168,7 @@ class QuestionView extends Component {
               questionAction={this.questionAction(q.id)}
             />
           ))}
-          <Search submitSearch={this.submitSearch} />
-          <div className={styles.paginationMenu}>{this.createPagination()}</div>
+          <div className='pagination-menu'>{this.createPagination()}</div>
         </div>
       </div>
     );
