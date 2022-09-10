@@ -3,7 +3,7 @@ import '../stylesheets/App.css';
 import Question from './Question';
 import Search from './Search';
 import $ from 'jquery';
-
+import {BaseURL} from'../config/BaseURL.json';
 class QuestionView extends Component {
   constructor() {
     super();
@@ -22,7 +22,7 @@ class QuestionView extends Component {
 
   getQuestions = () => {
     $.ajax({
-      url: `/questions?page=${this.state.page}`, //TODO: update request URL
+      url: `http://127.0.0.1:5000/questions?page=${this.state.page}`, //TODO: update request URL
       type: 'GET',
       success: (result) => {
         this.setState({
@@ -68,6 +68,7 @@ class QuestionView extends Component {
       url: `/categories/${id}/questions`, //TODO: update request URL
       type: 'GET',
       success: (result) => {
+        console.log(result)
         this.setState({
           questions: result.questions,
           totalQuestions: result.total_questions,
@@ -84,15 +85,15 @@ class QuestionView extends Component {
 
   submitSearch = (searchTerm) => {
     $.ajax({
-      url: `/questions/search`,
+      url: `http://127.0.0.1:5000/questions/search`, //TODO: update request URL
       type: 'POST',
       dataType: 'json',
       contentType: 'application/json',
       data: JSON.stringify({ searchTerm: searchTerm }),
-      xhrFields: {
-        withCredentials: true,
-      },
-      crossDomain: true,
+      // xhrFields: {
+      //   withCredentials: true,
+      // },
+      // crossDomain: true,
       success: (result) => {
         this.setState({
           questions: result.questions,
@@ -127,6 +128,7 @@ class QuestionView extends Component {
   };
 
   render() {
+    console.log(this.state.categories)
     return (
       <div className='question-view'>
         <div className='categories-list'>
@@ -159,6 +161,7 @@ class QuestionView extends Component {
         <div className='questions-list'>
           <h2>Questions</h2>
           {this.state.questions.map((q, ind) => (
+            
             <Question
               key={q.id}
               question={q.question}
