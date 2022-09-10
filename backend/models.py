@@ -7,9 +7,16 @@ import json
 from settings import DATABASE_NAME, DATABASE_PORT, DATABASE_OWNER, DATABASE_PASSWORD
 
 database_name = DATABASE_NAME
+database_path = 'postgresql://{}@{}/{}'.format(DATABASE_OWNER, 'localhost:5432', DATABASE_NAME)
 database_path = f'postgresql://postgres@localhost:5432/postgres'
 
+SQLALCHEMY_DATABASE_URI = 'postgresql://postgres@localhost:5432/postgres'
+
+SQLALCHEMY_TRACK_MODIFICATIONS = 'False'
+
 db = SQLAlchemy()
+
+
 
 """
 setup_db(app)
