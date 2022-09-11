@@ -10,6 +10,14 @@ class TriviaTestCase(unittest.TestCase):
 
     """This class represents the trivia test case"""
 
+    NEW_QUESTION = {
+        "question": "What's the formula of water",
+        "answer": "H2O",
+        "category": 1,
+        "difficulty": 1
+    }
+
+
     def setUp(self):
         """Define test variables and initialize app."""
 
@@ -88,6 +96,69 @@ class TriviaTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertTrue(len(data), 4)
+# ...............................................................................
+                # Tests For Failure Scenarios
+
+    def test_get_categories_error(self):
+        response = self.client().get('/categories/1')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response_data['success'], False)
+        self.assertEqual(response_data['message'], 'Resources not found')
+
+
+    def test_get_questions_error(self):
+        response = self.client().get('/questions?page=100')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response_data['success'], False)
+        self.assertEqual(response_data['message'], 'Resources not found')
+
+
+    def test_delete_questions_error(self):
+        response = self.client().delete('/questions/100')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response_data['success'], False)
+        self.assertEqual(response_data['message'], 'Resources not found')
+
+
+    def test_get_questions__by_category_error(self):
+        response = self.client().get('/categories/100/questions')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response_data['success'], False)
+        self.assertEqual(response_data['message'], 'Resources not found')  
+
+
+    def test_post_question_error(self):
+        response = self.client().post('/questions')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response_data['success'], False)
+        self.assertEqual(response_data['message'], 'Bad Request')
+
+
+    def test_search_question_error(self):
+        response = self.client().post('/questions')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response_data['success'], False)
+        self.assertEqual(response_data['message'], 'Bad Request')
+
+
+    def test_post_quizzes_error(self):
+        response = self.client().post('/quizzes')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 400, 'There 1')
+        self.assertEqual(response_data['success'], False, 'There 2')
 
 # Make the tests conveniently executable
 
