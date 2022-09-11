@@ -3,6 +3,7 @@ import '../stylesheets/App.css';
 import Question from './Question';
 import Search from './Search';
 import $ from 'jquery';
+ //eslint-disable-next-line
 import {BaseURL} from'../config/BaseURL.json';
 class QuestionView extends Component {
   constructor() {
