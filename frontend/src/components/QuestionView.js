@@ -3,8 +3,7 @@ import '../stylesheets/App.css';
 import Question from './Question';
 import Search from './Search';
 import $ from 'jquery';
- //eslint-disable-next-line
-import {BaseURL} from'../config/BaseURL.json';
+
 class QuestionView extends Component {
   constructor() {
     super();
@@ -14,6 +13,7 @@ class QuestionView extends Component {
       totalQuestions: 0,
       categories: {},
       currentCategory: null,
+      category_input: '',
     };
   }
 
@@ -23,7 +23,7 @@ class QuestionView extends Component {
 
   getQuestions = () => {
     $.ajax({
-      url: `http://127.0.0.1:5000/questions?page=${this.state.page}`, //TODO: update request URL
+      url: `/questions?page=${this.state.page}`, //TODO: update request URL
       type: 'GET',
       success: (result) => {
         this.setState({
@@ -69,7 +69,6 @@ class QuestionView extends Component {
       url: `/categories/${id}/questions`, //TODO: update request URL
       type: 'GET',
       success: (result) => {
-        console.log(result)
         this.setState({
           questions: result.questions,
           totalQuestions: result.total_questions,
@@ -86,15 +85,15 @@ class QuestionView extends Component {
 
   submitSearch = (searchTerm) => {
     $.ajax({
-      url: `http://127.0.0.1:5000/questions/search`, //TODO: update request URL
+      url: `/questions/search`, //TODO: update request URL
       type: 'POST',
       dataType: 'json',
       contentType: 'application/json',
       data: JSON.stringify({ searchTerm: searchTerm }),
-      // xhrFields: {
-      //   withCredentials: true,
-      // },
-      // crossDomain: true,
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       success: (result) => {
         this.setState({
           questions: result.questions,
@@ -128,11 +127,54 @@ class QuestionView extends Component {
     }
   };
 
+  submitCategory = (event) => {
+    event.preventDefault();
+    console.log(this.state.category_input);
+    $.ajax({
+      url: '/categories', //TODO: update request URL
+      type: 'POST',
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        type: this.state.category_input,
+      }),
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
+      success: (result) => {
+        window.location.reload();
+      },
+      error: (error) => {
+        alert('Unable to add category. Please try your request again');
+        return;
+      },
+    });
+  };
+
+  handleInputChange = () => {
+    this.setState({
+      category_input: this.category.value,
+    });
+  };
+
   render() {
-    console.log(this.state.categories)
     return (
       <div className='question-view'>
         <div className='categories-list'>
+            <br />
+
+          {/* submit category form */}
+          <form onSubmit={this.submitCategory}>
+            <input
+              placeholder='Add category...'
+              ref={(input) => (this.category = input)}
+              onChange={this.handleInputChange}
+              formMethod={'POST'}
+            />
+            <input type='submit' value='Submit' className='button' />
+          </form>
+
           <h2
             onClick={() => {
               this.getQuestions();
@@ -149,11 +191,16 @@ class QuestionView extends Component {
                 }}
               >
                 {this.state.categories[id]}
-                <img
+                {id > 6 ?<img
+                    className='category'
+                    alt={`${this.state.categories[id].toLowerCase()}`}
+                    src={`science.svg`}
+                  />
+                  : <img
                   className='category'
                   alt={`${this.state.categories[id].toLowerCase()}`}
                   src={`${this.state.categories[id].toLowerCase()}.svg`}
-                />
+                />}
               </li>
             ))}
           </ul>
@@ -162,7 +209,6 @@ class QuestionView extends Component {
         <div className='questions-list'>
           <h2>Questions</h2>
           {this.state.questions.map((q, ind) => (
-            
             <Question
               key={q.id}
               question={q.question}

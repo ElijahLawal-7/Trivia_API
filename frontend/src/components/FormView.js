@@ -16,7 +16,7 @@ class FormView extends Component {
 
   componentDidMount() {
     $.ajax({
-      url: `http://127.0.0.1:5000/categories`, //TODO: update request URL
+      url: `/categories`, //TODO: update request URL
       type: 'GET',
       success: (result) => {
         this.setState({ categories: result.categories });
@@ -32,7 +32,7 @@ class FormView extends Component {
   submitQuestion = (event) => {
     event.preventDefault();
     $.ajax({
-      url: 'http://127.0.0.1:5000/questions', //TODO: update request URL
+      url: '/questions', //TODO: update request URL
       type: 'POST',
       dataType: 'json',
       contentType: 'application/json',
@@ -42,16 +42,15 @@ class FormView extends Component {
         difficulty: this.state.difficulty,
         category: this.state.category,
       }),
-      // xhrFields: {
-      //   withCredentials: true,
-      // },
-      // crossDomain: true,
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       success: (result) => {
         document.getElementById('add-question-form').reset();
         return;
       },
       error: (error) => {
-        console.log(error)
         alert('Unable to add question. Please try your request again');
         return;
       },
@@ -93,7 +92,6 @@ class FormView extends Component {
             Category
             <select name='category' onChange={this.handleChange}>
               {Object.keys(this.state.categories).map((id) => {
-                console.log(this.state.categories)
                 return (
                   <option key={id} value={id}>
                     {this.state.categories[id]}
