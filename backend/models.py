@@ -3,20 +3,17 @@ from sqlalchemy import Column, String, Integer, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
-DB_HOST = os.getenv('DB_HOST', 'localhost:5432')
-DB_USER = os.getenv('DB_USER', 'postgres')
-DB_PASSWORD = os.getenv('DB_PASSWORD', ' ')
-DB_NAME = os.getenv('DB_NAME', 'postgres')
-database_path = 'postgresql+psycopg2://{}:{}@{}/{}'.format(
-    DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
+database_name = 'postgres'
+# database_path = 'postgresql://{}:{}@{}:{}/{}'.format('postgres', '3733', 'localhost','5432', database_name)
+database_path = 'postgresql://postgres:@localhost:5432/postgres'
+
+
 db = SQLAlchemy()
 
 """
 setup_db(app)
     binds a flask application and a SQLAlchemy service
 """
-
-
 def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -24,13 +21,10 @@ def setup_db(app, database_path=database_path):
     db.init_app(app)
     db.create_all()
 
-
 """
 Question
 
 """
-
-
 class Question(db.Model):
     __tablename__ = 'questions'
 
@@ -64,15 +58,12 @@ class Question(db.Model):
             'answer': self.answer,
             'category': self.category,
             'difficulty': self.difficulty
-        }
-
+            }
 
 """
 Category
 
 """
-
-
 class Category(db.Model):
     __tablename__ = 'categories'
 
@@ -82,8 +73,12 @@ class Category(db.Model):
     def __init__(self, type):
         self.type = type
 
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
     def format(self):
         return {
             'id': self.id,
             'type': self.type
-        }
+            }
